@@ -8,7 +8,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 # Tokeningizni qo'shtirnoq ichiga yozasiz
-TOKEN = "123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ"
+8906543011:AAE1MwSygdm0HXmPj3ELpUd502-m68ZB92M⁠
 
 dp = Dispatcher()
 
