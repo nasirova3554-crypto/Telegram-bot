@@ -1,10 +1,20 @@
-import telebot
+import asyncio
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
 
 TOKEN = "8906543011:AAE1MwSygdmOHXmPj3ELpUd502-m68ZB92M"
-bot = telebot.TeleBot(TOKEN)
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "Assalomu alaykum! Bot ishlayapti.")
+dp = Dispatcher()
 
-bot.infinity_polling()
+@dp.message(Command("start"))
+async def cmd_start(message: types.Message):
+    await message.answer("Assalomu alaykum! Aiogram boti ishlayapti.")
+
+async def main():
+    bot = Bot(token=TOKEN)
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(main())
