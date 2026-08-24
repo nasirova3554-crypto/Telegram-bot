@@ -2,6 +2,8 @@ import asyncio
 import logging
 import sys
 import sqlite3
+from threading import Thread
+from flask import Flask
 from aiogram import Bot, Dispatcher, F, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -17,6 +19,20 @@ from aiogram.types import (
 TOKEN = "8986085140:AAGtJBqi7cD-nbPZDzujHyBZ3QuKvi6oNC8"
 
 dp = Dispatcher()
+
+# --- RENDER UCHUN FLASK SERVER (O'chib qolmasligini ta'minlaydi) ---
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is running 24/7!"
+
+def run_flask():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run_flask)
+    t.start()
 
 # --- BAZA BILAN ISHLASH (Statistika uchun) ---
 def init_db():
@@ -217,7 +233,7 @@ async def faq_handler(callback: CallbackQuery):
 async def delivery_handler(callback: CallbackQuery):
     delivery_text = (
         f"<b>🚚 Yetkazib berish shartlari:</b>\n\n"
-        f"<b>Pardalar:</b> Qo'qon shahar va atrofdagi tumanlar bo'ylab elchab "
+        f"<b>Pardalar:</b> Qo'qon shahar va atrofdagi tumanlar bo'ylab eltib "
         f"olish va o'rnatib berish xizmatlari bilan.\n"
         f"<b> Kiyim-kechaklar:</b> O'zbekiston Respublikasi bo'ylab barcha "
         f"viloyatlarga pochta orqali yetkazib beriladi."
@@ -270,6 +286,9 @@ async def contact_handler(callback: CallbackQuery):
     await callback.answer()
 
 async def main() -> None:
+    # Flask serverni alohida oqimda (thread) ishga tushiramiz
+    keep_alive()
+    
     bot = Bot(
         token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
