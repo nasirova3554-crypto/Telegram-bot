@@ -51,10 +51,10 @@ main_menu = InlineKeyboardMarkup(
             InlineKeyboardButton(text="❓ Savol-javoblar (FAQ)", callback_data="faq"),
         ],
         [
-            InlineKeyboardButton(text="📢 Parda zakaz guruhi", url="https://t.me/parda_tikaniz_oson_tez"),
+            InlineKeyboardButton(text="📢 Parda zakaz guruhi", url="https://t.me/parda_tikamiz_oson_tez"),
         ],
         [
-            InlineKeyboardButton(text="✍️ Qo'ylak zakaz guruhi", url="https://t.me/zakazga_hamma_narsa_tikaniz"),
+            InlineKeyboardButton(text="✍️ Qo'ylak zakaz guruhi", url="https://t.me/zakazga_hamma_narsa_tikamiz"),
         ],
         [
             InlineKeyboardButton(text="⭐ Mijozlar sharhlari", url="https://t.me/O'lcham_olish_yo'riqnomasi"),
