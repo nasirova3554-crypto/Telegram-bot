@@ -226,8 +226,7 @@ async def delivery_handler(callback: CallbackQuery):
     )
     await callback.answer()
 
-@dp.
-callback_query(F.data == "worktime")
+@dp.callback_query(F.data == "worktime")
 async def worktime_handler(callback: CallbackQuery):
     worktime_text = (
         f"<b>⏰ Ish vaqti:</b>\n\n"
