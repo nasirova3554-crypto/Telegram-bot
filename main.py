@@ -14,13 +14,15 @@ from aiogram.types import (
     InlineKeyboardMarkup,
     Message,
 )
+from aiogram.client.session.aiohttp import AiohttpSession
 
 TOKEN = "8986085140:AAGtJBqi7cD-nbPZDzujHyBZ3QuKvi6oNC8"
 
-# 1. Dispatcher eng birinchi e'lon qilinadi (NameError chiqmasligi uchun)
+# Tarmoq uzilishlari va timeout'ga qarshi barqaror sessiya
+session = AiohttpSession(timeout=60)
 dp = Dispatcher()
 
-# --- RENDER UCHUN FLASK SERVER ---
+# --- RENDER UCHUN FLASK SERVER (24/7 faol saqlash uchun) ---
 app = Flask('')
 
 @app.route('/')
@@ -32,6 +34,7 @@ def run_flask():
 
 def keep_alive():
     t = Thread(target=run_flask)
+    t.daemon = True
     t.start()
 
 # --- BAZA BILAN ISHLASH ---
@@ -166,8 +169,6 @@ async def catalog_handler(callback: CallbackQuery):
         f"- Yuvilganda rangi o'zgarmaydi\n"
         f"- Buyurtma berish uchun quyidagi tugmani bosing:"
     )
-    
-    # Eskirgan rasm ID'lari xato bermasligi uchun vaqtincha faqat matn va buyurtma tugmasi shaklida ko'rsatiladi
     await callback.message.edit_text(
         product_text, parse_mode=ParseMode.HTML, reply_markup=order_markup
     )
@@ -265,8 +266,11 @@ async def contact_handler(callback: CallbackQuery):
 async def main() -> None:
     keep_alive()
     bot = Bot(
-        token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+        token=TOKEN, 
+        session=session,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
