@@ -18,6 +18,7 @@ from aiogram.types import (
 
 TOKEN = "8986085140:AAGtJBqi7cD-nbPZDzujHyBZ3QuKvi6oNC8"
 
+# 1. Dispatcher eng birinchi e'lon qilinadi (NameError chiqmasligi uchun)
 dp = Dispatcher()
 
 # --- RENDER UCHUN FLASK SERVER ---
@@ -65,6 +66,9 @@ main_menu = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text="🛍 Mahsulotlar katalogi", callback_data="catalog"),
             InlineKeyboardButton(text="❓ Savol-javoblar (FAQ)", callback_data="faq"),
+        ],
+        [
+            InlineKeyboardButton(text="📢 Rasmiy guruhimiz", url="https://t.me/alex_home_wear1"),
         ],
         [
             InlineKeyboardButton(text="📢 Parda zakaz guruhi", url="https://t.me/parda_tikamiz_oson_tez"),
@@ -226,7 +230,7 @@ async def faq_handler(callback: CallbackQuery):
         f"<b>1. Buyurtmani qanday beraman?</b>\n"
         f"- Guruhlarga o'tib yoki adminga yozib buyurtma berasiz.\n\n"
         f"<b>2. O'lchamni qanday tanlaymiz?</b>\n"
-        f"- O'lchamlaringizni adminga yuborsangiz, sizga moslab tayyorlab beramiz."
+        f"- O'lchamlaringizni adminga yuborib yuborsangiz, sizga moslab tayyorlab beramiz."
     )
     await callback.message.edit_text(
         faq_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
@@ -237,8 +241,8 @@ async def faq_handler(callback: CallbackQuery):
 async def worktime_handler(callback: CallbackQuery):
     worktime_text = (
         f"<b>⏰ Ish vaqti va Manzil:</b>\n\n"
-        f"<b>Telegram bot:</b> 24/7 (Kechayu kunduz avtomat ishlaydi)\n"
-        f"<b>Menejer va guruhlar:</b> Har kuni 09:00 dan 20:00 gacha buyurtmalar qabul qilinadi.\n\n"
+        f"<b>Telegram guruh va kanallar:</b> 24/7 ochiq\n"
+        f"<b>Menejer:</b> Har kuni 09:00 dan 20:00 gacha buyurtmalar qabul qiladi.\n\n"
         f"<b>📍 Manzil:</b> Qo'qon shahar, Avgonbog', Ansor market yonida"
     )
     await callback.message.edit_text(
