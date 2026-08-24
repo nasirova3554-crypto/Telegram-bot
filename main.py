@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import sys
+import sqlite3
 from aiogram import Bot, Dispatcher, F, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -187,8 +188,8 @@ async def size_guide_handler(callback: CallbackQuery):
         f"- Son: 106-110 sm\n"
         f"<b>🔹 42 (Standart 50-52)</b> - Ko'krak aylanasi: 108-112 sm | Bel: 90-94 sm | Son: 114-118 sm\n\n"
         f"<b>⚠️ Shim va liboslar uchun:</b>\n"
-        f"Siz odatda kiyadigan razmeringizni (masalan: ⟨40, 5, M, L, XL⟩) yoki "
-        f"⟨34, 36, 38⟩ va bo'yingiz uzunligini aytsangiz, shaxsiy "
+        f"Siz odatda kiyadigan razmeringizni (masalan: 40, 5, M, L, XL) yoki "
+        f"34, 36, 38 va bo'yingiz uzunligini aytsangiz, shaxsiy "
         f"o'lchamlaringizga moslab maxsus tikib beramiz!\n\n"
         f"<i>Aniq o'lcham olishda qiynalsangiz, adminga yozing, yordam beramiz:</i>\n"
         f"@Ali_tex1"
@@ -274,6 +275,6 @@ async def main() -> None:
     )
     await dp.start_polling(bot)
 
-if name == "__main__":
+if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())
