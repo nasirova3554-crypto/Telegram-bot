@@ -12,7 +12,6 @@ from aiogram.types import (
     CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    InputMediaPhoto,
     Message,
 )
 
@@ -168,27 +167,11 @@ async def catalog_handler(callback: CallbackQuery):
         f"- Buyurtma berish uchun quyidagi tugmani bosing:"
     )
     
-    media = [
-        InputMediaPhoto(
-            media="AgACAgIAAxkBAAIBoFrg16XufMGGekavS2v1ic9PAuMZxits6lIPuc4u39tBcBAAMCAAN5AAM0BA",
-            caption=product_text,
-            parse_mode=ParseMode.HTML,
-        ),
-        InputMediaPhoto(
-            media="AgACAgIAAxkBAAIBoFrgWF2qnba4eCPVuxl3dDgA4vvkZexsItGi0nAHgZ8dfwbBAAMCAAN5AAM0BA"
-        ),
-        InputMediaPhoto(
-            media="AgACAgIAAxkBAAIBoFrgpqMyEE0iqcdfn8yV3QLCSYAvUlZaws1t61IBzAn2BYVISBAAMCAAN5AAMBA"
-        ),
-        InputMediaPhoto(
-            media="AgACAgIAAxkBAAIBoFrgk3JEipote2EI6AIEYM5JdPsAaVyZxs1tG1ImBUeDmfhK3csBAAMCAAN5AAMBA"
-        ),
-    ]
-    
-    await callback.message.answer_media_group(media=media)
-    await callback.message.answer(
-        "Buyurtma berish uchun tugmani bosing:", reply_markup=order_markup
+    # Eskirgan rasm ID'lari xato bermasligi uchun vaqtincha faqat matn va buyurtma tugmasi shaklida ko'rsatiladi
+    await callback.message.edit_text(
+        product_text, parse_mode=ParseMode.HTML, reply_markup=order_markup
     )
+    await callback.answer()
 
 @dp.callback_query(F.data == "reviews")
 async def reviews_handler(callback: CallbackQuery):
@@ -230,7 +213,7 @@ async def faq_handler(callback: CallbackQuery):
         f"<b>1. Buyurtmani qanday beraman?</b>\n"
         f"- Guruhlarga o'tib yoki adminga yozib buyurtma berasiz.\n\n"
         f"<b>2. O'lchamni qanday tanlaymiz?</b>\n"
-        f"- O'lchamlaringizni adminga yuborib yuborsangiz, sizga moslab tayyorlab beramiz."
+        f"- O'lchamlaringizni adminga yozib yuborsangiz, sizga moslab tayyorlab beramiz."
     )
     await callback.message.edit_text(
         faq_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
