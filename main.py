@@ -20,7 +20,7 @@ TOKEN = "8986085140:AAGtJBqi7cD-nbPZDzujHyBZ3QuKvi6oNC8"
 
 dp = Dispatcher()
 
-# --- RENDER UCHUN FLASK SERVER (O'chib qolmasligini ta'minlaydi) ---
+# --- RENDER UCHUN FLASK SERVER ---
 app = Flask('')
 
 @app.route('/')
@@ -34,7 +34,7 @@ def keep_alive():
     t = Thread(target=run_flask)
     t.start()
 
-# --- BAZA BILAN ISHLASH (Statistika uchun) ---
+# --- BAZA BILAN ISHLASH ---
 def init_db():
     conn = sqlite3.connect("bot_users.db")
     cursor = conn.cursor()
@@ -82,7 +82,7 @@ main_menu = InlineKeyboardMarkup(
             InlineKeyboardButton(text="🚚 Yetkazib berish shartlari", callback_data="delivery"),
         ],
         [
-            InlineKeyboardButton(text="⏰ Ish vaqti", callback_data="worktime"),
+            InlineKeyboardButton(text="⏰ Ish vaqti va Manzil", callback_data="worktime"),
         ],
         [
             InlineKeyboardButton(text="💳 To'lov (Karta raqami)", callback_data="payment"),
@@ -126,7 +126,6 @@ async def command_start_handler(message: Message) -> None:
         parse_mode=ParseMode.HTML,
     )
 
-# --- ADMIN UCHUN STATISTIKA BUYRUG'I ---
 @dp.message(Command("stat"))
 async def stats_handler(message: Message):
     conn = sqlite3.connect("bot_users.db")
@@ -246,10 +245,10 @@ async def delivery_handler(callback: CallbackQuery):
 @dp.callback_query(F.data == "worktime")
 async def worktime_handler(callback: CallbackQuery):
     worktime_text = (
-        f"<b>⏰ Ish vaqti:</b>\n\n"
+        f"<b>⏰ Ish vaqti va Manzil:</b>\n\n"
         f"<b>Telegram bot:</b> 24/7 (Kechayu kunduz avtomat ishlaydi)\n"
-        f"<b>Menejer va guruhlar:</b> Har kuni 09:00 dan 20:00 gacha\n"
-        f"buyurtmalar qabul qilinadi."
+        f"<b>Menejer va guruhlar:</b> Har kuni 09:00 dan 20:00 gacha buyurtmalar qabul qilinadi.\n"
+        f"<b>Manzil:</b> Qo'qon shahar"
     )
     await callback.message.edit_text(
         worktime_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
@@ -286,9 +285,7 @@ async def contact_handler(callback: CallbackQuery):
     await callback.answer()
 
 async def main() -> None:
-    # Flask serverni alohida oqimda (thread) ishga tushiramiz
     keep_alive()
-    
     bot = Bot(
         token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
