@@ -130,8 +130,7 @@ async def stats_handler(message: Message):
         f"<b>Jami foydalanuvchilar:</b> {total_users} ta\n\n"
         f"{user_list_text}"
     )
-    await message.
-    answer(stat_message, parse_mode=ParseMode.HTML)
+    await message.answer(stat_message, parse_mode=ParseMode.HTML)
 
 @dp.callback_query(F.data == "back_to_menu")
 async def back_to_menu_handler(callback: CallbackQuery):
