@@ -14,7 +14,7 @@ from aiogram.types import (
     Message,
 )
 
-TOKEN = "8906543011:AAE1MwSygdm0HXmPj3ELpUd502-m68ZB92M"
+TOKEN = "8906543011:AAECA3gd1YUGBVcfOdZMRPhYWcLRHZYGd5s"
 
 dp = Dispatcher()
 
