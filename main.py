@@ -70,16 +70,13 @@ main_menu = InlineKeyboardMarkup(
             InlineKeyboardButton(text="📢 Parda zakaz guruhi", url="https://t.me/parda_tikamiz_oson_tez"),
         ],
         [
-            InlineKeyboardButton(text="✍️ Qo'ylak zakaz guruhi", url="https://t.me/zakazga_hamma_narsa_tikamiz"),
+            InlineKeyboardButton(text="✍️ Kiyimlar uchun zakaz guruhi", url="https://t.me/zakazga_hamma_narsa_tikamiz"),
         ],
         [
-            InlineKeyboardButton(text="⭐ Mijozlar sharhlari", url="https://t.me/O'lcham_olish_yo'riqnomasi"),
+            InlineKeyboardButton(text="⭐ Mijozlar sharhlari", callback_data="reviews"),
         ],
         [
-            InlineKeyboardButton(text="📏 O'lcham olish yo'riqnomasi", callback_data="size_guide"),
-        ],
-        [
-            InlineKeyboardButton(text="🚚 Yetkazib berish shartlari", callback_data="delivery"),
+            InlineKeyboardButton(text="📏 O'lcham olish va yetkazib berish", callback_data="size_delivery"),
         ],
         [
             InlineKeyboardButton(text="⏰ Ish vaqti va Manzil", callback_data="worktime"),
@@ -158,7 +155,7 @@ async def back_to_menu_handler(callback: CallbackQuery):
 @dp.callback_query(F.data == "catalog")
 async def catalog_handler(callback: CallbackQuery):
     product_text = (
-        f"<b>🌿 Yashil rangli libos va kardi-te'placer/plato</b>\n"
+        f"<b>🌿 Libos va kardi-te'placer/plato</b>\n"
         f"<b>💰Narxi:</b> 250,000 so'm\n\n"
         f"<b>Individual buyurtma:</b> Siz xohlagan rang va o'lchamlarda "
         f"sizning shaxsiy o'lcharingiz bo'yicha maxsus tikib beramiz!\n"
@@ -189,28 +186,36 @@ async def catalog_handler(callback: CallbackQuery):
         "Buyurtma berish uchun tugmani bosing:", reply_markup=order_markup
     )
 
-@dp.callback_query(F.data == "size_guide")
-async def size_guide_handler(callback: CallbackQuery):
-    guide_text = (
-        f"<b>📏 O'lcham jadvali va bo'yiroqma:</b>\n"
-        f"<b>Buyurtma berishda adashmasligingiz uchun o'lchamlarni quyidagicha "
-        f"aniqlab olasiz:</b>\n\n"
-        f"<b>🔹 36 (Standart 42-44)</b> - Ko'krak aylanasi: 84-88 sm | Bel: 66-70 sm |\n"
-        f"- Son: 90-94 sm\n"
-        f"<b>🔹 38 (Standart 46)</b> - Ko'krak aylanasi: 92-96 sm | Bel: 74-78 sm |\n"
-        f"- Son: 98-102 sm\n"
-        f"<b>🔹 40 (Standart 48)</b> - Ko'krak aylanasi: 100-104 sm | Bel: 82-86 sm |\n"
-        f"- Son: 106-110 sm\n"
-        f"<b>🔹 42 (Standart 50-52)</b> - Ko'krak aylanasi: 108-112 sm | Bel: 90-94 sm | Son: 114-118 sm\n\n"
-        f"<b>⚠️ Shim va liboslar uchun:</b>\n"
-        f"Siz odatda kiyadigan razmeringizni (masalan: 40, 5, M, L, XL) yoki "
-        f"34, 36, 38 va bo'yingiz uzunligini aytsangiz, shaxsiy "
-        f"o'lchamlaringizga moslab maxsus tikib beramiz!\n\n"
-        f"<i>Aniq o'lcham olishda qiynalsangiz, adminga yozing, yordam beramiz:</i>\n"
-        f"@Ali_tex1"
+@dp.callback_query(F.data == "reviews")
+async def reviews_handler(callback: CallbackQuery):
+    reviews_text = (
+        f"<b>⭐ Mijozlar sharhlari va fikrlari:</b>\n\n"
+        f"Bizning ishlarimizdan mamnun bo'lgan mijozlarimizning samimiy "
+        f"tashakkurlari va sharhlari biz uchun eng katta mukofotdir!\n\n"
+        f"Siz ham o'z fikringizni qoldirishingiz yoki boshqalarning "
+        f"sharhlari bilan tanishishingiz mumkin."
     )
     await callback.message.edit_text(
-        guide_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
+        reviews_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
+    )
+    await callback.answer()
+
+@dp.callback_query(F.data == "size_delivery")
+async def size_delivery_handler(callback: CallbackQuery):
+    sd_text = (
+        f"<b>📏 O'lcham olish va yetkazib berish shartlari:</b>\n\n"
+        f"<b>1. O'lcham olish:</b>\n"
+        f"🔹 36 (Standart 42-44) - Ko'krak: 84-88 sm | Bel: 66-70 sm | Son: 90-94 sm\n"
+        f"🔹 38 (Standart 46) - Ko'krak: 92-96 sm | Bel: 74-78 sm | Son: 98-102 sm\n"
+        f"🔹 40 (Standart 48) - Ko'krak: 100-104 sm | Bel: 82-86 sm | Son: 106-110 sm\n"
+        f"🔹 42 (Standart 50-52) - Ko'krak: 108-112 sm | Bel: 90-94 sm | Son: 114-118 sm\n\n"
+        f"Odatdagi o'lchamingiz yoki bo'yingizni aytsangiz, shaxsiy o'lcharingizga moslab tikamiz.\n\n"
+        f"<b>2. Yetkazib berish:</b>\n"
+        f"<b>Pardalar:</b> Qo'qon shahar va atrofdagi tumanlar bo'ylab eltib berish va o'rnatib berish bilan.\n"
+        f"<b>Kiyim-kechaklar:</b> O'zbekiston bo'ylab barcha viloyatlarga pochta orqali yuboriladi."
+    )
+    await callback.message.edit_text(
+        sd_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
     )
     await callback.answer()
 
@@ -219,7 +224,7 @@ async def faq_handler(callback: CallbackQuery):
     faq_text = (
         f"<b>❓ Ko'p beriladigan savollar va javoblar:</b>\n\n"
         f"<b>1. Buyurtmani qanday beraman?</b>\n"
-        f"- Tegishli guruhlarga o'tib yoki adminga yozib buyurtma berasiz.\n\n"
+        f"- Guruhlarga o'tib yoki adminga yozib buyurtma berasiz.\n\n"
         f"<b>2. O'lchamni qanday tanlaymiz?</b>\n"
         f"- O'lchamlaringizni adminga yuborsangiz, sizga moslab tayyorlab beramiz."
     )
@@ -228,27 +233,13 @@ async def faq_handler(callback: CallbackQuery):
     )
     await callback.answer()
 
-@dp.callback_query(F.data == "delivery")
-async def delivery_handler(callback: CallbackQuery):
-    delivery_text = (
-        f"<b>🚚 Yetkazib berish shartlari:</b>\n\n"
-        f"<b>Pardalar:</b> Qo'qon shahar va atrofdagi tumanlar bo'ylab eltib "
-        f"olish va o'rnatib berish xizmatlari bilan.\n"
-        f"<b> Kiyim-kechaklar:</b> O'zbekiston Respublikasi bo'ylab barcha "
-        f"viloyatlarga pochta orqali yetkazib beriladi."
-    )
-    await callback.message.edit_text(
-        delivery_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
-    )
-    await callback.answer()
-
 @dp.callback_query(F.data == "worktime")
 async def worktime_handler(callback: CallbackQuery):
     worktime_text = (
         f"<b>⏰ Ish vaqti va Manzil:</b>\n\n"
         f"<b>Telegram bot:</b> 24/7 (Kechayu kunduz avtomat ishlaydi)\n"
-        f"<b>Menejer va guruhlar:</b> Har kuni 09:00 dan 20:00 gacha buyurtmalar qabul qilinadi.\n"
-        f"<b>Manzil:</b> Qo'qon shahar"
+        f"<b>Menejer va guruhlar:</b> Har kuni 09:00 dan 20:00 gacha buyurtmalar qabul qilinadi.\n\n"
+        f"<b>📍 Manzil:</b> Qo'qon shahar, Avgonbog', Ansor market yonida"
     )
     await callback.message.edit_text(
         worktime_text, parse_mode=ParseMode.HTML, reply_markup=back_markup
@@ -261,10 +252,10 @@ async def payment_handler(callback: CallbackQuery):
         f"<b>💳 To'lov ma'lumotlari:</b>\n\n"
         f"<b>Aloqa bank:</b>\n"
         f"<b>Karta raqami:</b> <code>9860 6889 7583 2881</code>\n"
-        f"<b>Karta egasi:</b> MASTURAKHON ABDURASHIDOVA\n"
+        f"<b>Karta egasi:</b> MASTURAKHON ABDURASHIDOVA\n\n"
         f"<b>Xalq banki:</b>\n"
         f"<b>Karta raqami:</b> <code>9860 0803 0322 0482</code>\n"
-        f"<b>Karta egasi:</b> MASTURAKHON NASIROVA\n"
+        f"<b>Karta egasi:</b> MASTURAKHON NASIROVA\n\n"
         f"<i>To'lov qilib, chekni adminga yuborishni unutmang!</i>"
     )
     await callback.message.edit_text(
